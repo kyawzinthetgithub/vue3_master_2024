@@ -15,7 +15,8 @@
     "superbase:login": "supabase login",
     "superbase:link": "supabase link --project-ref wbskaofqrxkgvnrkwpep",
     "db:migrate:new": "supabase migration new projects-schema",
-    "db:reset": "supabase db reset --linked"
+    "db:reset": "supabase db reset --linked",
+    "db:seed": "node --env-file=.env database/seed.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.2",

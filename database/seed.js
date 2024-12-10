@@ -1,6 +1,17 @@
+/* eslint-env node */
+
 import {fakerEN_US as faker} from "@faker-js/faker";
+import { createClient } from '@supabase/supabase-js';
+const supabase = createClient(process.env.VITE_SUPERBASE_URL, process.env.SERVICE_ROLE_KEY);
 
-const personName = faker.person.fullName();
-const personBio = faker.person.bio();
+const seedProjects = async () =>{
+  const name = faker.lorem.words(3);
+  await supabase.from('projects').insert({
+    name: name,
+    slug: name.toLowerCase().replace(/ /g,'-'),
+    status: faker.helpers.arrayElement(['in-progress','completed']),
+    collaborators: faker.helpers.arrayElements([1,2,3])
+  });
+}
 
-console.log('My name is ',personName, 'I am ',personBio);
+await seedProjects();
