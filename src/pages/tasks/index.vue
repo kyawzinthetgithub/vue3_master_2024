@@ -19,7 +19,6 @@ const tasks = ref <Tables<'tasks'>[] | null>(null);
   const { data, error } = await supabase.from('tasks').select();
   if (error) console.log(error);
   tasks.value = data;
-  console.log(tasks.value)
 })();
 
 </script>
