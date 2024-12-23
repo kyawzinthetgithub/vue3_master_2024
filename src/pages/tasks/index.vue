@@ -1,17 +1,13 @@
 <template>
-  <div>
-    <h1>Tasks Page</h1>
-    <RouterLink to="/">Go To Home</RouterLink>
-    <ul>
-      <li v-for="task in tasks" :key="task.id">{{ task.name }}</li>
-    </ul>
-  </div>
+  <DataTable v-if="tasks" :columns="columns" :data="tasks" />
 </template>
 <script setup lang="ts">
 
 import { supabase } from '@/libs/superbaseClient.ts';
-import { ref } from 'vue';
+import { h, ref } from 'vue';
 import type { Tables } from '../../../database/types';
+import type { ColumnDef } from '@tanstack/vue-table';
+import DataTable from '@/components/ui/data-table/DataTable.vue';
 
 const tasks = ref <Tables<'tasks'>[] | null>(null);
 
@@ -20,5 +16,43 @@ const tasks = ref <Tables<'tasks'>[] | null>(null);
   if (error) console.log(error);
   tasks.value = data;
 })();
+
+const columns: ColumnDef<Tables<'tasks'>>[] = [
+  {
+    accessorKey: 'name',
+    header: () => h('div', { class: 'text-left' }, 'Name'),
+    cell: ({ row }) => {
+      return h('div', { class: 'text-left font-medium' }, row.getValue('name'))
+    },
+  },
+  {
+    accessorKey: 'status',
+    header: () => h('div', { class: 'text-left' }, 'Status'),
+    cell: ({ row }) => {
+      return h('div', { class: 'text-left font-medium' }, row.getValue('status'))
+    },
+  },
+  {
+    accessorKey: 'due_date',
+    header: () => h('div', { class: 'text-left' }, 'Due Date'),
+    cell: ({ row }) => {
+      return h('div', { class: 'text-left font-medium' }, row.getValue('due_date'))
+    },
+  },
+  {
+    accessorKey: 'project_id',
+    header: () => h('div', { class: 'text-left' }, 'Project'),
+    cell: ({ row }) => {
+      return h('div', { class: 'text-left font-medium' }, row.getValue('project_id'))
+    },
+  },
+  {
+    accessorKey: 'collaborators',
+    header: () => h('div', { class: 'text-left' }, 'Collaborators'),
+    cell: ({ row }) => {
+      return h('div', { class: 'text-left font-medium' }, JSON.stringify(row.getValue('collaborators')))
+    },
+  }
+]
 
 </script>
