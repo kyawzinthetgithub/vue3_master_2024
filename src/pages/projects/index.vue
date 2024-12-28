@@ -8,7 +8,6 @@
 import { supabase } from '@/libs/superbaseClient.ts';
 import type { Tables } from '../../../database/types';
 import type { ColumnDef } from '@tanstack/vue-table';
-import DataTable from '@/components/ui/data-table/DataTable.vue';
 import { RouterLink } from 'vue-router';
 
 const projects = ref<Tables<'projects'>[] | null>(null);
