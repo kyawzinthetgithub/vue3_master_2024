@@ -8,20 +8,24 @@ import type { Tables } from '../../../database/types';
 import type { ColumnDef } from '@tanstack/vue-table';
 import { RouterLink } from 'vue-router';
 
-const tasks = ref <Tables<'tasks'>[] | null>(null);
+usePageStore().pageData.title = 'My Tasks';
 
-(async () => {
+const tasks = ref<Tables<'tasks'>[] | null>(null);
+
+const getTasks = async () => {
   const { data, error } = await supabase.from('tasks').select();
   if (error) console.log(error);
   tasks.value = data;
-})();
+};
+
+await getTasks();
 
 const columns: ColumnDef<Tables<'tasks'>>[] = [
   {
     accessorKey: 'name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
     cell: ({ row }) => {
-      return h(RouterLink, { to:`/projects/${row.original.id}`, class: 'text-left hover:bg-muted hover:block w-full' }, row.getValue('name'))
+      return h(RouterLink, { to: `/projects/${row.original.id}`, class: 'text-left hover:bg-muted hover:block w-full' }, () => row.getValue('name'))
     },
   },
   {

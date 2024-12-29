@@ -10,21 +10,24 @@ import type { Tables } from '../../../database/types';
 import type { ColumnDef } from '@tanstack/vue-table';
 import { RouterLink } from 'vue-router';
 
+usePageStore().pageData.title = 'Projects';
+
 const projects = ref<Tables<'projects'>[] | null>(null);
 
-(async () => {
+const getProjects = async () => {
   const { data, error } = await supabase.from('projects').select();
   if (error) console.log(error);
   projects.value = data;
-  console.log(projects.value)
-})();
+};
+
+await getProjects();
 
 const columns: ColumnDef<Tables<'projects'>>[] = [
   {
     accessorKey: 'name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
     cell: ({ row }) => {
-      return h(RouterLink, { to:`/projects/${row.original.slug}`, class: 'text-left hover:bg-muted hover:block w-full' }, row.getValue('name'))
+      return h(RouterLink, { to:`/projects/${row.original.slug}`, class: 'text-left hover:bg-muted hover:block w-full' }, () => row.getValue('name'))
     }
   },
   {
