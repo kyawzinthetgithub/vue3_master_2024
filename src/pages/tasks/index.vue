@@ -3,24 +3,23 @@
 </template>
 <script setup lang="ts">
 
-import { supabase } from '@/libs/superbaseClient.ts';
-import type { Tables } from '../../../database/types';
 import type { ColumnDef } from '@tanstack/vue-table';
 import { RouterLink } from 'vue-router';
-
+import { tasksWithProjectsQuery } from '@/utils/supaQueriests';
+import { type TasksWithProjects } from '@/utils/supaQueriests';
 usePageStore().pageData.title = 'My Tasks';
 
-const tasks = ref<Tables<'tasks'>[] | null>(null);
+const tasks = ref<TasksWithProjects | null>(null);
 
 const getTasks = async () => {
-  const { data, error } = await supabase.from('tasks').select();
+  const { data, error } = await tasksWithProjectsQuery;
   if (error) console.log(error);
   tasks.value = data;
 };
 
 await getTasks();
 
-const columns: ColumnDef<Tables<'tasks'>>[] = [
+const columns: ColumnDef<TasksWithProjects[0]>[] = [
   {
     accessorKey: 'name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
@@ -42,11 +41,11 @@ const columns: ColumnDef<Tables<'tasks'>>[] = [
       return h('div', { class: 'text-left font-medium' }, row.getValue('due_date'))
     },
   },
-  {
-    accessorKey: 'project_id',
+   {
+    accessorKey: 'projects',
     header: () => h('div', { class: 'text-left' }, 'Project'),
     cell: ({ row }) => {
-      return h('div', { class: 'text-left font-medium' }, row.getValue('project_id'))
+      return row.original.projects ? h(RouterLink, { to: `/projects/${row.original.projects.slug}`, class: 'text-left hover:bg-muted hover:block w-full' }, () => row.original.projects?.name) : ''
     },
   },
   {
