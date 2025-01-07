@@ -7,7 +7,7 @@ export const columns: ColumnDef<TasksWithProjects[0]>[] = [
     accessorKey: 'name',
     header: () => h('div', { class: 'text-left' }, 'Name'),
     cell: ({ row }) => {
-      return h(RouterLink, { to: `/projects/${row.original.id}`, class: 'text-left hover:bg-muted hover:block w-full' }, () => row.getValue('name'))
+      return h(RouterLink, { to: `/tasks/${row.original.id}`, class: 'text-left hover:bg-muted hover:block w-full' }, () => row.getValue('name'))
     },
   },
   {
