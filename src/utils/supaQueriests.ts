@@ -40,10 +40,13 @@ export const taskQuery = (id: string) => {
   )
   `,
     )
-    .eq('id',id)
+    .eq('id', id)
     .single()
 }
 
+export const profileQuery = (id: string) => {
+  return supabase.from('profiles').select(`*`).eq('id', id).single()
+}
 
 export const projectsQuery = supabase.from('projects').select()
 

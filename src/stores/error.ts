@@ -20,8 +20,8 @@ export const useErrorStore = defineStore('error-store', () => {
       return
     }
 
-    (activeError.value as ExtendedPostgrestError) = error as ExtendedPostgrestError
-    (activeError.value as ExtendedPostgrestError).statusCode = customCode || 500
+    ;(activeError.value as ExtendedPostgrestError) = error as ExtendedPostgrestError
+    ;(activeError.value as ExtendedPostgrestError).statusCode = customCode || 500
   }
 
   const clearError = () => {
@@ -36,3 +36,7 @@ export const useErrorStore = defineStore('error-store', () => {
     clearError,
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useErrorStore, import.meta.hot))
+}
