@@ -35,6 +35,13 @@ const AccountLinks = [
   }
 ];
 
+const executeAction = async (linkTitle:string) => {
+  if(linkTitle === "Sign Out"){
+    const {logout} = await import('@/utils/SupaAuth');
+    await logout();
+  }
+}
+
 </script>
 
 <template>
@@ -55,7 +62,7 @@ const AccountLinks = [
       </div>
 
       <div class="border-y text-center bg-background py-3">
-        <SidebarLinks :links="AccountLinks" />
+        <SidebarLinks :links="AccountLinks" @actionClicked="executeAction" />
       </div>
     </nav>
   </aside>
