@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import { login } from '@/utils/SupaAuth';
-
-const router = useRouter();
+import { login } from '@/utils/SupaAuth'
 
 const formData = ref({
   email: '',
-  password: '',
-});
+  password: ''
+})
+
+const _error = ref('')
+
+const router = useRouter()
 
 const signin = async () => {
-  const isLoggedIn = await login(formData.value);
-  if(isLoggedIn) router.push('/');
+  const { error } = await login(formData.value)
+  if (!error) return router.push('/')
+
+  _error.value =
+    error.message === 'Invalid login credentials'
+      ? 'Incorrect email or password'
+      : error.message
 }
 </script>
 
@@ -23,22 +30,31 @@ const signin = async () => {
       </CardHeader>
       <CardContent>
         <div class="flex flex-col gap-4 mb-4 justify-center items-center">
-          <Button variant="outline" class="w-full"> Register with Google </Button>
+          <Button variant="outline" class="w-full">
+            Register with Google
+          </Button>
           <Separator label="Or" />
         </div>
 
         <form class="grid gap-4" @submit.prevent="signin">
           <div class="grid gap-2">
             <Label id="email" class="text-left">Email</Label>
-            <Input type="email" placeholder="johndoe19@example.com" v-model="formData.email" required />
+            <Input type="email" placeholder="johndoe19@example.com" required v-model="formData.email"
+              :class="{ 'border-red-500': _error }" />
           </div>
           <div class="grid gap-2">
             <div class="flex items-center">
               <Label id="password">Password</Label>
-              <a href="#" class="inline-block ml-auto text-xs underline"> Forgot your password? </a>
+              <a href="#" class="inline-block ml-auto text-xs underline">
+                Forgot your password?
+              </a>
             </div>
-            <Input id="password" type="password" autocomplete v-model="formData.password" required />
+            <Input id="password" type="password" autocomplete required v-model="formData.password"
+              :class="{ 'border-red-500': _error }" />
           </div>
+          <ul class="text-sm text-left text-red-500" v-if="_error">
+            <li class="list-disc">{{ _error }}</li>
+          </ul>
           <Button type="submit" class="w-full"> Login </Button>
         </form>
         <div class="mt-4 text-sm text-center">
