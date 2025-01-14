@@ -8,7 +8,7 @@ const formData = ref({
 
 const router = useRouter()
 
-const {serverError,handleServerError} = useFormError();
+const { serverError, handleServerError, realTimeErrors, handleLoginForm } = useFormError();
 
 const signin = async () => {
   const { error } = await login(formData.value)
@@ -37,7 +37,10 @@ const signin = async () => {
           <div class="grid gap-2">
             <Label id="email" class="text-left">Email</Label>
             <Input type="email" placeholder="johndoe19@example.com" required v-model="formData.email"
-              :class="{ 'border-red-500': serverError }" />
+              :class="{ 'border-red-500': serverError }" @input="handleLoginForm(formData)"/>
+              <ul class="text-sm text-left text-red-500" v-if="realTimeErrors?.email.length">
+                <li v-for="error in realTimeErrors?.email" class="list-disc">{{ error }}</li>
+              </ul>
           </div>
           <div class="grid gap-2">
             <div class="flex items-center">
@@ -48,6 +51,9 @@ const signin = async () => {
             </div>
             <Input id="password" type="password" autocomplete required v-model="formData.password"
               :class="{ 'border-red-500': serverError }" />
+              <ul class="text-sm text-left text-red-500" v-if="realTimeErrors?.password.length">
+                <li v-for="error in realTimeErrors?.password" class="list-disc">{{ error }}</li>
+              </ul>
           </div>
           <ul class="text-sm text-left text-red-500" v-if="serverError">
             <li class="list-disc">{{ serverError }}</li>
