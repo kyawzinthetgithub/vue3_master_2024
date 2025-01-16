@@ -22,7 +22,7 @@ export const useFormError = () => {
     if (emailErrors.length) realTimeErrors.value.email = emailErrors
 
     const passwordErrors = validatePassword(formData.password)
-    if (passwordErrors.length) realTimeErrors.value.email = passwordErrors
+    if (passwordErrors.length) realTimeErrors.value.password = passwordErrors
   }
 
   return {
