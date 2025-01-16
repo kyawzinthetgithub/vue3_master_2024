@@ -6,7 +6,7 @@ import type { Tables } from 'database/types'
 export const useAuthStore = defineStore('auth-store', () => {
   const user = ref<null | User>(null)
   const profile = ref<null | Tables<'profiles'>>(null)
-  const isTrackingAuthChanges = ref(false);
+  const isTrackingAuthChanges = ref(false)
 
   const setProfile = async () => {
     if (!user.value) {
@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth-store', () => {
     }
 
     if (!profile.value || profile.value.id !== user.value.id) {
-      const { data } = await profileQuery(user.value.id)
+      const { data } = await profileQuery({ column: 'id', value: user.value.id })
       profile.value = data || null
     }
   }
@@ -36,13 +36,13 @@ export const useAuthStore = defineStore('auth-store', () => {
   }
 
   const trackAuthChanges = () => {
-    if(isTrackingAuthChanges.value) return;
-    isTrackingAuthChanges.value = true;
-    supabase.auth.onAuthStateChange((event, session)=>{
-      setTimeout(async ()=>{
-        await setAuth(session);
-      },0);
-    });
+    if (isTrackingAuthChanges.value) return
+    isTrackingAuthChanges.value = true
+    supabase.auth.onAuthStateChange((event, session) => {
+      setTimeout(async () => {
+        await setAuth(session)
+      }, 0)
+    })
   }
 
   return {
@@ -50,7 +50,7 @@ export const useAuthStore = defineStore('auth-store', () => {
     profile,
     setAuth,
     getSession,
-    trackAuthChanges
+    trackAuthChanges,
   }
 })
 

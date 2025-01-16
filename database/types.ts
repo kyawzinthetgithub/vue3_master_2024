@@ -11,7 +11,7 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
-          avatra_url: string | null
+          avatar_url: string | null
           bio: string | null
           created_at: string
           full_name: string
@@ -20,7 +20,7 @@ export type Database = {
           username: string
         }
         Insert: {
-          avatra_url?: string | null
+          avatar_url?: string | null
           bio?: string | null
           created_at?: string
           full_name: string
@@ -29,7 +29,7 @@ export type Database = {
           username: string
         }
         Update: {
-          avatra_url?: string | null
+          avatar_url?: string | null
           bio?: string | null
           created_at?: string
           full_name?: string
@@ -48,7 +48,6 @@ export type Database = {
           name: string
           slug: string
           status: Database["public"]["Enums"]["current_status"]
-          updated_at: string | null
         }
         Insert: {
           collaborators?: string[]
@@ -58,7 +57,6 @@ export type Database = {
           name: string
           slug: string
           status?: Database["public"]["Enums"]["current_status"]
-          updated_at?: string | null
         }
         Update: {
           collaborators?: string[]
@@ -68,7 +66,6 @@ export type Database = {
           name?: string
           slug?: string
           status?: Database["public"]["Enums"]["current_status"]
-          updated_at?: string | null
         }
         Relationships: []
       }
@@ -80,6 +77,7 @@ export type Database = {
           due_date: string | null
           id: number
           name: string
+          profile_id: string
           project_id: number | null
           status: Database["public"]["Enums"]["current_status"]
         }
@@ -90,6 +88,7 @@ export type Database = {
           due_date?: string | null
           id?: never
           name: string
+          profile_id: string
           project_id?: number | null
           status?: Database["public"]["Enums"]["current_status"]
         }
@@ -100,10 +99,18 @@ export type Database = {
           due_date?: string | null
           id?: never
           name?: string
+          profile_id?: string
           project_id?: number | null
           status?: Database["public"]["Enums"]["current_status"]
         }
         Relationships: [
+          {
+            foreignKeyName: "tasks_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "tasks_project_id_fkey"
             columns: ["project_id"]
