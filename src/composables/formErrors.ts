@@ -1,9 +1,21 @@
 import type { LoginForm } from '@/types/AuthForm'
 import type { AuthError } from '@supabase/supabase-js'
 
+//static type declare
+// interface formErrors {
+//   email: [],
+//   password: []
+// }
+
+
+// dynamic type declare
+type formErrors<T> = {
+  [K in keyof T]: string[]
+}
+
 export const useFormError = () => {
   const serverError = ref('')
-  const realTimeErrors = ref()
+  const realTimeErrors = ref<formErrors<LoginForm>>()
 
   const handleServerError = (error: AuthError) => {
     serverError.value =
