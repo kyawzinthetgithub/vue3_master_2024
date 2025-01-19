@@ -1,13 +1,35 @@
-import { groupedProfilesQuery } from "@/utils/supaQueriests"
+import { groupedProfilesQuery } from '@/utils/supaQueriests'
+import type { Projects } from '@/utils/supaQueriests'
+import type { TasksWithProjects } from '@/utils/supaQueriests'
+import type { GroupedCollabs } from '@/types/GroupedCollabs';
 
 export const useCollabs = () => {
-  const getProfilesByIds = async (userIds:string[]) => {
-    const {data,error} = await groupedProfilesQuery(userIds)
-    if(error || !data) return [];
+
+  const groupedCollabs = ref<GroupedCollabs>({});
+
+  const getProfilesByIds = async (userIds: string[]) => {
+    const { data, error } = await groupedProfilesQuery(userIds)
+    if (error || !data) return []
     return data
   }
 
+  const getGroupedCollabs = async (items: Projects | TasksWithProjects) => {
+
+    const filteredItems = items
+      .filter((item) => item.collaborators.length);
+
+    const promises = filteredItems.map((item) => getProfilesByIds(item.collaborators))
+    const results = await Promise.all(promises)
+
+    filteredItems.forEach((item,index)=>{
+      groupedCollabs.value[item.id] = results[index]
+    })
+
+  }
+
   return {
-    getProfilesByIds
+    getProfilesByIds,
+    getGroupedCollabs,
+    groupedCollabs
   }
 }
