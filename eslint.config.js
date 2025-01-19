@@ -14,7 +14,7 @@ export default [
   },
   {
     rules: {
-      'vue/multi-word-component-names': false
+      'vue/multi-word-component-names': off
     }
   },
 

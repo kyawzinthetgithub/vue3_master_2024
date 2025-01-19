@@ -44,8 +44,12 @@ export const taskQuery = (id: string) => {
     .single()
 }
 
-export const profileQuery = ({column, value} : {column:string, value:string}) => {
-  return supabase.from('profiles').select(`*`).eq(column,value).single()
+export const profileQuery = ({ column, value }: { column: string; value: string }) => {
+  return supabase.from('profiles').select(`*`).eq(column, value).single()
+}
+
+export const groupedProfilesQuery = (userIds: string[]) => {
+  return supabase.from('profiles').select('username,avatar_url,id,full_name').in('id',userIds)
 }
 
 export const projectsQuery = supabase.from('projects').select()
@@ -54,3 +58,4 @@ export type TasksWithProjects = QueryData<typeof tasksWithProjectsQuery>
 export type Projects = QueryData<typeof projectsQuery>
 export type Project = QueryData<ReturnType<typeof projectQuery>>
 export type Task = QueryData<ReturnType<typeof taskQuery>>
+export type Collabs = QueryData<ReturnType<typeof groupedProfilesQuery>>
