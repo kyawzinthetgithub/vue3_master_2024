@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { projectQuery } from '@/utils/supaQueriests';
-import type { Project } from '@/utils/supaQueriests';
 
-const route = useRoute('/projects/[slug]');
-const project = ref<Project | null>(null);
+const { slug } = useRoute('/projects/[slug]').params;
+
+const projectLoader = useProjectsStore();
+const { project } = storeToRefs(projectLoader)
+const { getProject } = projectLoader;
 
 watch(() => project.value?.name, () => {
-  usePageStore().pageData.title = `Project : ${project.value?.name}`;
+  usePageStore().pageData.title = `Project : ${project.value?.name || ''}`;
 });
 
-const getProject = async () => {
-  const { data, error, status } = await projectQuery(route.params.slug);
-  if (error) useErrorStore().setError({error,customCode:status});
-  project.value = data;
-}
-await getProject();
+await getProject(slug);
 </script>
 
 
@@ -38,7 +34,8 @@ await getProject();
       <TableHead> Collaborators </TableHead>
       <TableCell>
         <div class="flex">
-          <Avatar class="-mr-4 border border-primary hover:scale-110 transition-transform" v-for="collab in project?.collaborators" :key="collab">
+          <Avatar class="-mr-4 border border-primary hover:scale-110 transition-transform"
+            v-for="collab in project?.collaborators" :key="collab">
             <RouterLink class="w-full h-full flex items-center justify-center" to="">
               <AvatarImage src="" alt="" />
               <AvatarFallback> </AvatarFallback>
