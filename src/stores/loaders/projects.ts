@@ -19,7 +19,7 @@ export const useProjectsStore = defineStore('projects-store', () => {
     if (ref.value) {
       const finalQuery = typeof query === 'function' ? query(key) : query
       finalQuery.then(({ data, error }) => {
-        if (JSON.stringify(projects.value) === JSON.stringify(data)) {
+        if (JSON.stringify(ref.value) === JSON.stringify(data)) {
           return
         } else {
           loaderFn.delete(key)
@@ -50,7 +50,7 @@ export const useProjectsStore = defineStore('projects-store', () => {
     validateCache({
       ref: project,
       query: projectQuery,
-      key: 'slug',
+      key: slug,
       loaderFn: loadProject,
     })
   }
