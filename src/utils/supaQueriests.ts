@@ -52,6 +52,10 @@ export const groupedProfilesQuery = (userIds: string[]) => {
   return supabase.from('profiles').select('username,avatar_url,id,full_name').in('id',userIds)
 }
 
+export const updateProjectQuery = (updatedProject = {}, id: number) => {
+  return supabase.from('projects').update(updatedProject).eq('id',id)
+}
+
 export const projectsQuery = supabase.from('projects').select()
 
 export type TasksWithProjects = QueryData<typeof tasksWithProjectsQuery>
