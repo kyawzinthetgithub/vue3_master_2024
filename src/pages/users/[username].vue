@@ -15,6 +15,8 @@ const getProfile = async()=>{
   profile.value = data;
 }
 
+usePageStore().pageData.title = '';
+
 await getProfile();
 
 </script>
