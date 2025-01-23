@@ -37,7 +37,7 @@ export const columns = (collabs: Ref<GroupedCollabs>): ColumnDef<Projects[0]>[] 
       return h(
         'div',
         { class: 'text-left' },
-        h(AppInPlaceEditStatus, { modelValue: row.original.status }),
+        h(AppInPlaceEditStatus, { modelValue: row.original.status, readonly: true }),
       )
     },
   },
