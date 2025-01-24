@@ -49,11 +49,15 @@ export const profileQuery = ({ column, value }: { column: string; value: string 
 }
 
 export const groupedProfilesQuery = (userIds: string[]) => {
-  return supabase.from('profiles').select('username,avatar_url,id,full_name').in('id',userIds)
+  return supabase.from('profiles').select('username,avatar_url,id,full_name').in('id', userIds)
 }
 
 export const updateProjectQuery = (updatedProject = {}, id: number) => {
-  return supabase.from('projects').update(updatedProject).eq('id',id)
+  return supabase.from('projects').update(updatedProject).eq('id', id)
+}
+
+export const updateTaskQuery = (updatedTask = {}, id: number) => {
+  return supabase.from('tasks').update(updatedTask).eq('id', id)
 }
 
 export const projectsQuery = supabase.from('projects').select()
