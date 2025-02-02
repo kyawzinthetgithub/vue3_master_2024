@@ -1,5 +1,6 @@
 import type { QueryData } from '@supabase/supabase-js'
 import { supabase } from '../libs/superbaseClient'
+import type { CreateNewTask } from '@/types/CreateNewForm'
 
 export const tasksWithProjectsQuery = supabase.from('tasks').select(`
   *,
@@ -60,7 +61,13 @@ export const updateTaskQuery = (updatedTask = {}, id: number) => {
   return supabase.from('tasks').update(updatedTask).eq('id', id)
 }
 
+export const profilesQuery = supabase.from('profiles').select(`id , full_name`)
+
 export const projectsQuery = supabase.from('projects').select()
+
+export const createNewTaskQuery = (newTask: CreateNewTask) =>{
+  return supabase.from('tasks').insert(newTask);
+}
 
 export type TasksWithProjects = QueryData<typeof tasksWithProjectsQuery>
 export type Projects = QueryData<typeof projectsQuery>
