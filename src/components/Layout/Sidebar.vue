@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useMenu } from '@/composables/menu'
+import { menuKey } from '@/utils/injectionKey'
+import type {MenuInjectionOptions} from '@/utils/injectionKey'
 import { useWindowSize } from '@vueuse/core'
 
 const { profile } = storeToRefs(useAuthStore())
@@ -49,7 +50,7 @@ const executeAction = async (linkTitle: string) => {
 
 defineEmits(['taskClicked']);
 
-const { menuOpen, toggleMenu } = useMenu();
+const { menuOpen, toggleMenu } = inject(menuKey) as MenuInjectionOptions;
 const windowWidth = useWindowSize().width;
 
 watchEffect(()=>{
