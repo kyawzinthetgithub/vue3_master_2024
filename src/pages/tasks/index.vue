@@ -2,6 +2,15 @@
 import { useTasksStore } from '@/stores/loaders/tasks'
 import { columns } from '@/utils/tableColumns/tasksColumns'
 
+
+useMeta({
+  title: 'Task | Pulse',
+  description:{
+    name: 'description',
+    context: 'Pulse Task Page'
+  }
+})
+
 usePageStore().pageData.title = 'My Tasks'
 
 const tasksLoader = useTasksStore()
